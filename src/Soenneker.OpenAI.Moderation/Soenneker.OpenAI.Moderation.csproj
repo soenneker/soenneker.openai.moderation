@@ -47,6 +47,6 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
         <PackageReference Include="Soenneker.Gen.EnumValues" Version="4.0.38" />
         <PackageReference Include="Soenneker.OpenAI.OpenApiClient" Version="4.0.68" />
-        <PackageReference Include="Soenneker.OpenAI.OpenApiClientUtil" Version="4.0.96" />
+        <PackageReference Include="Soenneker.OpenAI.OpenApiClientUtil" Version="4.0.101" />
     </ItemGroup>
 </Project>
