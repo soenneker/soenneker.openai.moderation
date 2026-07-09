@@ -16,6 +16,7 @@ using Soenneker.OpenAI.OpenApiClient.Models;
 using Soenneker.OpenAI.OpenApiClientUtil.Abstract;
 using Soenneker.Tests.Attributes.Local;
 using Soenneker.Tests.HostedUnit;
+using OpenAIModerationCategoryNames = Soenneker.OpenAI.Moderation.Enums.OpenAIModerationCategoryNames;
 
 namespace Soenneker.OpenAI.Moderation.Tests;
 
@@ -52,14 +53,14 @@ public sealed class OpenAIModerationUtilTests : HostedUnitTest
             {
                 Results =
                 [
-                    new CreateModerationResponse_results
+                    new CreateModerationResponseResultsItem
                     {
                         Flagged = true,
-                        Categories = new CreateModerationResponse_results_categories
+                        Categories = new CreateModerationResponseResultsItemCategories
                         {
                             Violence = true
                         },
-                        CategoryScores = new CreateModerationResponse_results_category_scores
+                        CategoryScores = new CreateModerationResponseResultsItemCategoryScores
                         {
                             Violence = .98
                         }

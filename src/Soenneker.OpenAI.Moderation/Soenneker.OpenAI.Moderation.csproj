@@ -37,6 +37,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="NewFolder\**" />
+      <EmbeddedResource Remove="NewFolder\**" />
+      <None Remove="NewFolder\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Include="..\..\README.md" Pack="true" PackagePath="\" />
         <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
         <None Include="..\..\icon.png" Pack="true" PackagePath="\" />
@@ -45,8 +51,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.9" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
-        <PackageReference Include="Soenneker.Gen.EnumValues" Version="4.0.38" />
-        <PackageReference Include="Soenneker.OpenAI.OpenApiClient" Version="4.0.68" />
-        <PackageReference Include="Soenneker.OpenAI.OpenApiClientUtil" Version="4.0.96" />
+        <PackageReference Include="Soenneker.Gen.EnumValues" Version="4.0.39" />
+        <PackageReference Include="Soenneker.OpenAI.OpenApiClient" Version="4.0.69" />
+        <PackageReference Include="Soenneker.OpenAI.OpenApiClientUtil" Version="4.0.101" />
     </ItemGroup>
 </Project>

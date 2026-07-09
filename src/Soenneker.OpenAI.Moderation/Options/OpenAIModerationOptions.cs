@@ -22,6 +22,8 @@ public sealed class OpenAIModerationOptions
     /// <summary>
     /// Creates options from conventional OpenAI configuration keys.
     /// </summary>
+    /// <param name="configuration">The configuration to read moderation settings from.</param>
+    /// <returns>A new options instance populated from configuration.</returns>
     public static OpenAIModerationOptions FromConfiguration(IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(configuration);

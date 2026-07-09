@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Soenneker.OpenAI.Moderation.Constants;
 using Soenneker.OpenAI.OpenApiClient.Models;
+using OpenAIModerationCategoryNames = Soenneker.OpenAI.Moderation.Enums.OpenAIModerationCategoryNames;
 
 namespace Soenneker.OpenAI.Moderation.Extensions;
 
@@ -11,36 +11,71 @@ namespace Soenneker.OpenAI.Moderation.Extensions;
 /// </summary>
 public static class CreateModerationResponseExtension
 {
+    /// <summary>
+    /// Determines whether any moderation result in the response is flagged.
+    /// </summary>
+    /// <param name="response">The moderation response to inspect.</param>
+    /// <returns><see langword="true"/> when any result is flagged; otherwise <see langword="false"/>.</returns>
     public static bool IsFlagged(this CreateModerationResponse? response)
     {
         return response?.Results?.Any(result => result.Flagged == true) == true;
     }
 
-    public static CreateModerationResponse_results? GetFirstFlaggedResult(this CreateModerationResponse? response)
+    /// <summary>
+    /// Gets the first flagged moderation result from a response.
+    /// </summary>
+    /// <param name="response">The moderation response to inspect.</param>
+    /// <returns>The first flagged result, or <see langword="null"/> when no result is flagged.</returns>
+    public static CreateModerationResponseResultsItem? GetFirstFlaggedResult(this CreateModerationResponse? response)
     {
         return response?.Results?.FirstOrDefault(result => result.Flagged == true);
     }
 
+    /// <summary>
+    /// Gets the first flagged category from a moderation response.
+    /// </summary>
+    /// <param name="response">The moderation response to inspect.</param>
+    /// <returns>The first flagged category, or <see langword="null"/> when no category is flagged.</returns>
     public static OpenAIModerationCategoryNames? GetFirstFlaggedCategory(this CreateModerationResponse? response)
     {
         return response.GetFirstFlaggedResult()?.GetFirstFlaggedCategory();
     }
 
+    /// <summary>
+    /// Gets the string value of the first flagged category from a moderation response.
+    /// </summary>
+    /// <param name="response">The moderation response to inspect.</param>
+    /// <returns>The first flagged category value, or <see langword="null"/> when no category is flagged.</returns>
     public static string? GetFirstFlaggedCategoryValue(this CreateModerationResponse? response)
     {
         return response.GetFirstFlaggedCategory()?.Value;
     }
 
-    public static OpenAIModerationCategoryNames? GetFirstFlaggedCategory(this CreateModerationResponse_results? result)
+    /// <summary>
+    /// Gets the first flagged category from a moderation result.
+    /// </summary>
+    /// <param name="result">The moderation result to inspect.</param>
+    /// <returns>The first flagged category, or <see langword="null"/> when no category is flagged.</returns>
+    public static OpenAIModerationCategoryNames? GetFirstFlaggedCategory(this CreateModerationResponseResultsItem? result)
     {
         return result.GetFlaggedCategories().FirstOrDefault();
     }
 
-    public static string? GetFirstFlaggedCategoryValue(this CreateModerationResponse_results? result)
+    /// <summary>
+    /// Gets the string value of the first flagged category from a moderation result.
+    /// </summary>
+    /// <param name="result">The moderation result to inspect.</param>
+    /// <returns>The first flagged category value, or <see langword="null"/> when no category is flagged.</returns>
+    public static string? GetFirstFlaggedCategoryValue(this CreateModerationResponseResultsItem? result)
     {
         return result.GetFirstFlaggedCategory()?.Value;
     }
 
+    /// <summary>
+    /// Gets all flagged categories across every result in a moderation response.
+    /// </summary>
+    /// <param name="response">The moderation response to inspect.</param>
+    /// <returns>A list of distinct flagged categories.</returns>
     public static IReadOnlyList<OpenAIModerationCategoryNames> GetFlaggedCategories(this CreateModerationResponse? response)
     {
         if (response?.Results is not {Count: > 0} results)
@@ -49,14 +84,24 @@ public static class CreateModerationResponseExtension
         return results.SelectMany(result => result.GetFlaggedCategories()).Distinct().ToList();
     }
 
+    /// <summary>
+    /// Gets all flagged category string values across every result in a moderation response.
+    /// </summary>
+    /// <param name="response">The moderation response to inspect.</param>
+    /// <returns>A list of distinct flagged category values.</returns>
     public static IReadOnlyList<string> GetFlaggedCategoryValues(this CreateModerationResponse? response)
     {
         return response.GetFlaggedCategories().Select(category => category.Value).ToList();
     }
 
-    public static IReadOnlyList<OpenAIModerationCategoryNames> GetFlaggedCategories(this CreateModerationResponse_results? result)
+    /// <summary>
+    /// Gets all flagged categories from a moderation result.
+    /// </summary>
+    /// <param name="result">The moderation result to inspect.</param>
+    /// <returns>A list of flagged categories.</returns>
+    public static IReadOnlyList<OpenAIModerationCategoryNames> GetFlaggedCategories(this CreateModerationResponseResultsItem? result)
     {
-        CreateModerationResponse_results_categories? categories = result?.Categories;
+        CreateModerationResponseResultsItemCategories? categories = result?.Categories;
 
         if (categories == null)
             return [];
@@ -75,10 +120,10 @@ public static class CreateModerationResponseExtension
         if (categories.HateThreatening == true)
             flaggedCategories.Add(OpenAIModerationCategoryNames.HateThreatening);
 
-        if (IsTrue(categories.Illicit?.Value))
+        if (categories.Illicit?.Value == true)
             flaggedCategories.Add(OpenAIModerationCategoryNames.Illicit);
 
-        if (IsTrue(categories.IllicitViolent?.Value))
+        if (categories.IllicitViolent?.Value == true)
             flaggedCategories.Add(OpenAIModerationCategoryNames.IllicitViolent);
 
         if (categories.SelfHarm == true)
@@ -105,13 +150,14 @@ public static class CreateModerationResponseExtension
         return flaggedCategories;
     }
 
-    public static IReadOnlyList<string> GetFlaggedCategoryValues(this CreateModerationResponse_results? result)
+    /// <summary>
+    /// Gets all flagged category string values from a moderation result.
+    /// </summary>
+    /// <param name="result">The moderation result to inspect.</param>
+    /// <returns>A list of flagged category values.</returns>
+    public static IReadOnlyList<string> GetFlaggedCategoryValues(this CreateModerationResponseResultsItem? result)
     {
         return result.GetFlaggedCategories().Select(category => category.Value).ToList();
     }
 
-    private static bool IsTrue(string? value)
-    {
-        return string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
-    }
 }

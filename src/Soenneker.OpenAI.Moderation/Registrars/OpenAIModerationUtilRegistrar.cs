@@ -13,6 +13,8 @@ public static class OpenAIModerationUtilRegistrar
     /// <summary>
     /// Adds <see cref="IOpenAIModerationUtil"/> as a singleton service. <para/>
     /// </summary>
+    /// <param name="services">The service collection to add the utility to.</param>
+    /// <returns>The same service collection for chaining.</returns>
     public static IServiceCollection AddOpenAIModerationUtilAsSingleton(this IServiceCollection services)
     {
         services.AddOpenAIOpenApiClientUtilAsSingleton()
@@ -24,6 +26,8 @@ public static class OpenAIModerationUtilRegistrar
     /// <summary>
     /// Adds <see cref="IOpenAIModerationUtil"/> as a scoped service. <para/>
     /// </summary>
+    /// <param name="services">The service collection to add the utility to.</param>
+    /// <returns>The same service collection for chaining.</returns>
     public static IServiceCollection AddOpenAIModerationUtilAsScoped(this IServiceCollection services)
     {
         services.AddOpenAIOpenApiClientUtilAsScoped()
