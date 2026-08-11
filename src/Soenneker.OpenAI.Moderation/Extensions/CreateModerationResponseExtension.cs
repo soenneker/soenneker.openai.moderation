@@ -120,10 +120,10 @@ public static class CreateModerationResponseExtension
         if (categories.HateThreatening == true)
             flaggedCategories.Add(OpenAIModerationCategoryNames.HateThreatening);
 
-        if (categories.Illicit?.Value == true)
+        if (categories.Illicit == true)
             flaggedCategories.Add(OpenAIModerationCategoryNames.Illicit);
 
-        if (categories.IllicitViolent?.Value == true)
+        if (categories.IllicitViolent == true)
             flaggedCategories.Add(OpenAIModerationCategoryNames.IllicitViolent);
 
         if (categories.SelfHarm == true)
