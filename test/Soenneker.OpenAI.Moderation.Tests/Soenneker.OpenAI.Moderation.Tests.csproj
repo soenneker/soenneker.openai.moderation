@@ -20,10 +20,10 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="2.0.0" />
         <PackageReference Include="Moq" Version="4.20.72" />
-        <PackageReference Include="Soenneker.Tests.Attributes.Local" Version="4.0.73" />
-        <PackageReference Include="Soenneker.Utils.Test" Version="4.0.323" />
-        <PackageReference Include="Soenneker.Tests.HostedUnit" Version="4.0.180" />
-        <PackageReference Include="TUnit" Version="1.64.6" />
+        <PackageReference Include="Soenneker.Tests.Attributes.Local" Version="4.0.75" />
+        <PackageReference Include="Soenneker.Utils.Test" Version="4.0.324" />
+        <PackageReference Include="Soenneker.Tests.HostedUnit" Version="4.0.183" />
+        <PackageReference Include="TUnit" Version="1.64.13" />
     </ItemGroup>
 
     <ItemGroup>
