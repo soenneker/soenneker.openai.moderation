@@ -16,6 +16,7 @@ dotnet add package Soenneker.OpenAI.Moderation
 ```csharp
 using Soenneker.OpenAI.Moderation.Abstract;
 using Soenneker.OpenAI.Moderation.Extensions;
+using Soenneker.OpenAI.Moderation.Models;
 using Soenneker.OpenAI.Moderation.Registrars;
 using Soenneker.OpenAI.OpenApiClient.Models;
 
@@ -29,17 +30,38 @@ if (response.IsFlagged())
 }
 ```
 
+Images can be supplied as HTTP(S) URLs or base64 data URLs:
+
+```csharp
+CreateModerationResponse? imageResponse = await moderationUtil.ModerateImage(
+    "https://example.com/image.png",
+    cancellationToken);
+
+CreateModerationResponse? base64Response = await moderationUtil.ModerateBase64Image(
+    base64Image,
+    "image/jpeg",
+    cancellationToken);
+
+CreateModerationResponse? multimodalResponse = await moderationUtil.ModerateMultimodal(
+    [
+        OpenAIModerationInput.FromText("Optional context for the image"),
+        OpenAIModerationInput.FromBase64Image(base64Image, "image/jpeg")
+    ],
+    cancellationToken);
+```
+
 Configuration defaults:
 
 ```json
 {
   "OpenAI": {
-    "ApiKey": "...",
     "Moderation": {
+      "ApiKey": "...",
       "Enabled": true,
-      "Model": "omni-moderation-latest",
-      "SkipWhenApiKeyMissing": true
+      "Model": "omni-moderation-latest"
     }
   }
 }
 ```
+
+`OpenAI:Moderation:ApiKey`, `OpenAI:Moderation:Enabled`, and `OpenAI:Moderation:Model` are required when using configuration-based overloads.

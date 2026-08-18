@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Extensions.Configuration;
+using Soenneker.Extensions.Configuration;
 using Soenneker.OpenAI.Moderation.Constants;
 
 namespace Soenneker.OpenAI.Moderation.Options;
@@ -28,18 +29,10 @@ public sealed class OpenAIModerationOptions
     {
         ArgumentNullException.ThrowIfNull(configuration);
 
-        var options = new OpenAIModerationOptions();
-
-        string? enabled = configuration[OpenAIModerationDefaults.EnabledConfigurationKey];
-
-        if (bool.TryParse(enabled, out bool parsedEnabled))
-            options.Enabled = parsedEnabled;
-
-        string? model = configuration[OpenAIModerationDefaults.ModelConfigurationKey];
-
-        if (!string.IsNullOrWhiteSpace(model))
-            options.Model = model;
-
-        return options;
+        return new OpenAIModerationOptions
+        {
+            Enabled = configuration.GetValueStrict<bool>(OpenAIModerationDefaults.EnabledConfigurationKey),
+            Model = configuration.GetValueStrict<string>(OpenAIModerationDefaults.ModelConfigurationKey)
+        };
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Soenneker.OpenAI.Moderation.Constants;
 using Soenneker.OpenAI.OpenApiClient.Models;
 using OpenAIModerationCategoryNames = Soenneker.OpenAI.Moderation.Enums.OpenAIModerationCategoryNames;
 
@@ -81,7 +80,7 @@ public static class CreateModerationResponseExtension
         if (response?.Results is not {Count: > 0} results)
             return [];
 
-        return results.SelectMany(result => result.GetFlaggedCategories()).Distinct().ToList();
+        return [.. results.SelectMany(result => result.GetFlaggedCategories()).Distinct()];
     }
 
     /// <summary>
@@ -91,7 +90,7 @@ public static class CreateModerationResponseExtension
     /// <returns>A list of distinct flagged category values.</returns>
     public static IReadOnlyList<string> GetFlaggedCategoryValues(this CreateModerationResponse? response)
     {
-        return response.GetFlaggedCategories().Select(category => category.Value).ToList();
+        return [.. response.GetFlaggedCategories().Select(category => category.Value)];
     }
 
     /// <summary>
@@ -157,7 +156,7 @@ public static class CreateModerationResponseExtension
     /// <returns>A list of flagged category values.</returns>
     public static IReadOnlyList<string> GetFlaggedCategoryValues(this CreateModerationResponseResultsItem? result)
     {
-        return result.GetFlaggedCategories().Select(category => category.Value).ToList();
+        return [.. result.GetFlaggedCategories().Select(category => category.Value)];
     }
 
 }

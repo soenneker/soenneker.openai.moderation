@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Soenneker.OpenAI.Moderation.Abstract;
-using Soenneker.OpenAI.OpenApiClientUtil.Registrars;
+using Soenneker.OpenAI.Moderation.HttpClients.Registrars;
 
 namespace Soenneker.OpenAI.Moderation.Registrars;
 
@@ -17,8 +17,9 @@ public static class OpenAIModerationUtilRegistrar
     /// <returns>The same service collection for chaining.</returns>
     public static IServiceCollection AddOpenAIModerationUtilAsSingleton(this IServiceCollection services)
     {
-        services.AddOpenAIOpenApiClientUtilAsSingleton()
-                .TryAddSingleton<IOpenAIModerationUtil, OpenAIModerationUtil>();
+        services.AddOpenAIModerationHttpClientAsSingleton();
+        services.TryAddSingleton<IOpenAIModerationOpenApiClientUtil, OpenAIModerationOpenApiClientUtil>();
+        services.TryAddSingleton<IOpenAIModerationUtil, OpenAIModerationUtil>();
 
         return services;
     }
@@ -30,8 +31,9 @@ public static class OpenAIModerationUtilRegistrar
     /// <returns>The same service collection for chaining.</returns>
     public static IServiceCollection AddOpenAIModerationUtilAsScoped(this IServiceCollection services)
     {
-        services.AddOpenAIOpenApiClientUtilAsScoped()
-                .TryAddScoped<IOpenAIModerationUtil, OpenAIModerationUtil>();
+        services.AddOpenAIModerationHttpClientAsScoped();
+        services.TryAddScoped<IOpenAIModerationOpenApiClientUtil, OpenAIModerationOpenApiClientUtil>();
+        services.TryAddScoped<IOpenAIModerationUtil, OpenAIModerationUtil>();
 
         return services;
     }

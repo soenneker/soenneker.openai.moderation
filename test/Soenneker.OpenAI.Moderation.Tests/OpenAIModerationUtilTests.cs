@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using AwesomeAssertions;
@@ -10,10 +11,10 @@ using Moq;
 using Soenneker.OpenAI.Moderation.Abstract;
 using Soenneker.OpenAI.Moderation.Constants;
 using Soenneker.OpenAI.Moderation.Extensions;
+using Soenneker.OpenAI.Moderation.Models;
 using Soenneker.OpenAI.Moderation.Options;
 using Soenneker.OpenAI.OpenApiClient;
 using Soenneker.OpenAI.OpenApiClient.Models;
-using Soenneker.OpenAI.OpenApiClientUtil.Abstract;
 using Soenneker.Tests.Attributes.Local;
 using Soenneker.Tests.HostedUnit;
 using OpenAIModerationCategoryNames = Soenneker.OpenAI.Moderation.Enums.OpenAIModerationCategoryNames;
@@ -68,13 +69,14 @@ public sealed class OpenAIModerationUtilTests : HostedUnitTest
                 ]
             });
 
-        var clientUtil = new Mock<IOpenAIOpenApiClientUtil>();
+        var clientUtil = new Mock<IOpenAIModerationOpenApiClientUtil>();
         clientUtil.Setup(util => util.Get(It.IsAny<CancellationToken>()))
                   .ReturnsAsync(new OpenAIOpenApiClient(requestAdapter.Object));
 
         IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
         {
-            [OpenAIModerationDefaults.ApiKeyConfigurationKey] = "test-key"
+            [OpenAIModerationDefaults.EnabledConfigurationKey] = "true",
+            [OpenAIModerationDefaults.ModelConfigurationKey] = OpenAIModerationDefaults.Model
         }).Build();
 
         var util = new OpenAIModerationUtil(clientUtil.Object, configuration);
@@ -100,6 +102,50 @@ public sealed class OpenAIModerationUtilTests : HostedUnitTest
         }, CancellationToken.None);
 
         result.Should().BeNull();
+    }
+
+    [Test]
+    public async ValueTask ModerateMultimodal_WithImageAndText_SerializesExpectedInput()
+    {
+        RequestInformation? requestInformation = null;
+        var requestAdapter = new Mock<IRequestAdapter>();
+        requestAdapter.SetupProperty(adapter => adapter.BaseUrl, "https://api.openai.com/v1");
+        requestAdapter.SetupGet(adapter => adapter.SerializationWriterFactory)
+                      .Returns(new JsonSerializationWriterFactory());
+        requestAdapter
+            .Setup(adapter => adapter.SendAsync(It.IsAny<RequestInformation>(),
+                It.IsAny<ParsableFactory<CreateModerationResponse>>(),
+                It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
+            .Callback<RequestInformation, ParsableFactory<CreateModerationResponse>,
+                Dictionary<string, ParsableFactory<IParsable>>, CancellationToken>((request, _, _, _) =>
+                requestInformation = request)
+            .ReturnsAsync(new CreateModerationResponse());
+
+        var clientUtil = new Mock<IOpenAIModerationOpenApiClientUtil>();
+        clientUtil.Setup(util => util.Get(It.IsAny<CancellationToken>()))
+                  .ReturnsAsync(new OpenAIOpenApiClient(requestAdapter.Object));
+
+        var util = new OpenAIModerationUtil(clientUtil.Object, new ConfigurationBuilder().Build());
+
+        await util.ModerateMultimodal(
+        [
+            OpenAIModerationInput.FromText("context"),
+            OpenAIModerationInput.FromImageUrl("https://example.com/image.png"),
+            OpenAIModerationInput.FromBase64Image("YWJj", "image/png")
+        ], new OpenAIModerationOptions(), CancellationToken.None);
+
+        requestInformation.Should().NotBeNull();
+        requestInformation!.Content.Should().NotBeNull();
+        requestInformation.Content!.Position = 0;
+
+        using var reader = new StreamReader(requestInformation.Content, leaveOpen: true);
+        string json = await reader.ReadToEndAsync(CancellationToken.None);
+
+        json.Should().Contain("\"type\":\"text\"");
+        json.Should().Contain("\"text\":\"context\"");
+        json.Should().Contain("\"type\":\"image_url\"");
+        json.Should().Contain("\"image_url\":{\"url\":\"https://example.com/image.png\"}");
+        json.Should().Contain("\"image_url\":{\"url\":\"data:image/png;base64,YWJj\"}");
     }
 
     [Test]
