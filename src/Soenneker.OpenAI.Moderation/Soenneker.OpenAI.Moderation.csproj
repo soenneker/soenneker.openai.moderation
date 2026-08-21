@@ -49,9 +49,15 @@
     </ItemGroup>
 
     <ItemGroup>
+<<<<<<< HEAD
         <PackageReference Include="Soenneker.Gen.EnumValues" Version="4.0.43" />
         <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.857" />
         <PackageReference Include="Soenneker.OpenAI.Moderation.HttpClients" Version="4.0.1" />
         <PackageReference Include="Soenneker.OpenAI.OpenApiClient" Version="4.0.100" />
+=======
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.11" />
+        <PackageReference Include="Soenneker.Gen.EnumValues" Version="4.0.44" />
+        <PackageReference Include="Soenneker.OpenAI.OpenApiClientUtil" Version="4.0.166" />
+>>>>>>> 018d0996bf587cac53e5a81430380cb595049de0
     </ItemGroup>
 </Project>
