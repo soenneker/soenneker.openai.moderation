@@ -50,9 +50,14 @@
 =======
         <PackageReference Include="Soenneker.Tests.Attributes.Local" Version="4.0.83" />
         <PackageReference Include="Soenneker.Utils.Test" Version="4.0.324" />
+<<<<<<< HEAD
         <PackageReference Include="Soenneker.Tests.HostedUnit" Version="4.0.198" />
         <PackageReference Include="TUnit" Version="1.65.51" />
 >>>>>>> d10855ef4dfc7279a2e738be361864f9614c28df
+=======
+        <PackageReference Include="Soenneker.Tests.HostedUnit" Version="4.0.199" />
+        <PackageReference Include="TUnit" Version="1.65.63" />
+>>>>>>> d5bd30219e61830dc3b9d9589445b60d14861b00
     </ItemGroup>
 
     <ItemGroup>
