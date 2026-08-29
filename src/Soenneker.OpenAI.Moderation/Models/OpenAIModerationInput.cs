@@ -26,7 +26,8 @@ public sealed class OpenAIModerationInput
     /// <summary>
     /// Creates a text moderation input.
     /// </summary>
-    /// <param name="text">The text to moderate.</param>
+    /// <param name="text">Text to read, write, or transform.</param>
+    /// <returns>The same builder instance, so additional classes or variants can be chained.</returns>
     public static OpenAIModerationInput FromText(string text)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(text);
@@ -37,6 +38,7 @@ public sealed class OpenAIModerationInput
     /// Creates an image moderation input.
     /// </summary>
     /// <param name="imageUrl">An HTTP(S) image URL or a base64 data URL.</param>
+    /// <returns>The same builder instance, so additional classes or variants can be chained.</returns>
     public static OpenAIModerationInput FromImageUrl(string imageUrl)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(imageUrl);
@@ -48,6 +50,7 @@ public sealed class OpenAIModerationInput
     /// </summary>
     /// <param name="base64">The base64-encoded image payload, without a data URL prefix.</param>
     /// <param name="mediaType">The image MIME type, such as <c>image/png</c> or <c>image/jpeg</c>.</param>
+    /// <returns>The same builder instance, so additional classes or variants can be chained.</returns>
     public static OpenAIModerationInput FromBase64Image(string base64, string mediaType)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(base64);

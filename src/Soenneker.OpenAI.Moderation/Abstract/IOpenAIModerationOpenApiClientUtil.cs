@@ -12,5 +12,7 @@ public interface IOpenAIModerationOpenApiClientUtil
     /// <summary>
     /// Gets the configured OpenAI client.
     /// </summary>
+    /// <param name="cancellationToken">Token used to cancel the operation.</param>
+    /// <returns>A task whose result is the requested openAI Open API Client.</returns>
     ValueTask<OpenAIOpenApiClient> Get(CancellationToken cancellationToken = default);
 }
