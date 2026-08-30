@@ -13,7 +13,6 @@ using Soenneker.OpenAI.OpenApiClientUtil.Abstract;
 
 namespace Soenneker.OpenAI.Moderation;
 
-/// <inheritdoc cref="IOpenAIModerationUtil"/>
 public sealed class OpenAIModerationUtil : IOpenAIModerationUtil
 {
     private readonly IOpenAIOpenApiClientUtil _clientUtil;
@@ -30,27 +29,23 @@ public sealed class OpenAIModerationUtil : IOpenAIModerationUtil
         _configuration = configuration;
     }
 
-    /// <inheritdoc />
     public ValueTask<CreateModerationResponse?> Moderate(string input, CancellationToken cancellationToken = default)
     {
         return Moderate(input, OpenAIModerationOptions.FromConfiguration(_configuration), cancellationToken);
     }
 
-    /// <inheritdoc />
     public ValueTask<CreateModerationResponse?> Moderate(string input, OpenAIModerationOptions options,
         CancellationToken cancellationToken = default)
     {
         return Moderate([input], options, cancellationToken);
     }
 
-    /// <inheritdoc />
     public ValueTask<CreateModerationResponse?> Moderate(IReadOnlyList<string> inputs,
         CancellationToken cancellationToken = default)
     {
         return Moderate(inputs, OpenAIModerationOptions.FromConfiguration(_configuration), cancellationToken);
     }
 
-    /// <inheritdoc />
     public async ValueTask<CreateModerationResponse?> Moderate(IReadOnlyList<string> inputs,
         OpenAIModerationOptions options, CancellationToken cancellationToken = default)
     {

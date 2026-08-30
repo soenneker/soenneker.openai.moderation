@@ -6,7 +6,7 @@ using Soenneker.OpenAI.OpenApiClientUtil.Registrars;
 namespace Soenneker.OpenAI.Moderation.Registrars;
 
 /// <summary>
-/// A .NET OpenAI content moderation utility using their OpenAPI client
+/// Registers OpenAI text moderation services.
 /// </summary>
 public static class OpenAIModerationUtilRegistrar
 {
@@ -30,7 +30,7 @@ public static class OpenAIModerationUtilRegistrar
     /// <returns>The same service collection for chaining.</returns>
     public static IServiceCollection AddOpenAIModerationUtilAsScoped(this IServiceCollection services)
     {
-        services.AddOpenAIOpenApiClientUtilAsScoped()
+        services.AddOpenAIOpenApiClientUtilAsSingleton()
                 .TryAddScoped<IOpenAIModerationUtil, OpenAIModerationUtil>();
 
         return services;

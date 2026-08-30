@@ -7,7 +7,7 @@ using Soenneker.OpenAI.OpenApiClient.Models;
 namespace Soenneker.OpenAI.Moderation.Abstract;
 
 /// <summary>
-/// A .NET OpenAI content moderation utility using their OpenAPI client
+/// Moderates text through OpenAI and returns the generated moderation response models.
 /// </summary>
 public interface IOpenAIModerationUtil
 {
