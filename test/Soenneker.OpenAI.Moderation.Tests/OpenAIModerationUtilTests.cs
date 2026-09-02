@@ -36,7 +36,7 @@ public sealed class OpenAIModerationUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async ValueTask Moderate_WhenOpenAIFlagsInput_ReturnsFlaggedResult()
+    public async ValueTask Moderate_WhenOpenAIFlagsInput_ReturnsFlaggedResult(CancellationToken cancellationToken)
     {
         RequestInformation? requestInformation = null;
         var requestAdapter = new Mock<IRequestAdapter>();
@@ -80,7 +80,7 @@ public sealed class OpenAIModerationUtilTests : HostedUnitTest
         var util = new OpenAIModerationUtil(clientUtil.Object, configuration);
 
         CreateModerationResponse? result = await util.Moderate("violent test message", new OpenAIModerationOptions(),
-            CancellationToken.None);
+            cancellationToken);
 
         result.IsFlagged().Should().BeTrue();
         result.GetFirstFlaggedCategory().Should().Be(OpenAIModerationCategoryNames.Violence);
@@ -92,12 +92,12 @@ public sealed class OpenAIModerationUtilTests : HostedUnitTest
     }
 
     [Test]
-    public async ValueTask Moderate_WhenDisabled_Skips()
+    public async ValueTask Moderate_WhenDisabled_Skips(CancellationToken cancellationToken)
     {
         CreateModerationResponse? result = await _util.Moderate("test", new OpenAIModerationOptions
         {
             Enabled = false
-        }, CancellationToken.None);
+        }, cancellationToken);
 
         result.Should().BeNull();
     }
