@@ -13,6 +13,7 @@ using Soenneker.OpenAI.OpenApiClientUtil.Abstract;
 
 namespace Soenneker.OpenAI.Moderation;
 
+/// <inheritdoc cref="IOpenAIModerationUtil" />
 public sealed class OpenAIModerationUtil : IOpenAIModerationUtil
 {
     private readonly IOpenAIOpenApiClientUtil _clientUtil;
