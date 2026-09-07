@@ -58,7 +58,50 @@ public static class CreateModerationResponseExtension
     /// <returns>The first flagged category, or <see langword="null"/> when no category is flagged.</returns>
     public static OpenAIModerationCategoryNames? GetFirstFlaggedCategory(this CreateModerationResponseResultsItem? result)
     {
-        return result.GetFlaggedCategories().FirstOrDefault();
+        CreateModerationResponseResultsItemCategories? categories = result?.Categories;
+        if (categories is null)
+            return null;
+
+        if (categories.Harassment == true)
+            return OpenAIModerationCategoryNames.Harassment;
+
+        if (categories.HarassmentThreatening == true)
+            return OpenAIModerationCategoryNames.HarassmentThreatening;
+
+        if (categories.Hate == true)
+            return OpenAIModerationCategoryNames.Hate;
+
+        if (categories.HateThreatening == true)
+            return OpenAIModerationCategoryNames.HateThreatening;
+
+        if (categories.Illicit == true)
+            return OpenAIModerationCategoryNames.Illicit;
+
+        if (categories.IllicitViolent == true)
+            return OpenAIModerationCategoryNames.IllicitViolent;
+
+        if (categories.SelfHarm == true)
+            return OpenAIModerationCategoryNames.SelfHarm;
+
+        if (categories.SelfHarmIntent == true)
+            return OpenAIModerationCategoryNames.SelfHarmIntent;
+
+        if (categories.SelfHarmInstructions == true)
+            return OpenAIModerationCategoryNames.SelfHarmInstructions;
+
+        if (categories.Sexual == true)
+            return OpenAIModerationCategoryNames.Sexual;
+
+        if (categories.SexualMinors == true)
+            return OpenAIModerationCategoryNames.SexualMinors;
+
+        if (categories.Violence == true)
+            return OpenAIModerationCategoryNames.Violence;
+
+        if (categories.ViolenceGraphic == true)
+            return OpenAIModerationCategoryNames.ViolenceGraphic;
+
+        return null;
     }
 
     /// <summary>
