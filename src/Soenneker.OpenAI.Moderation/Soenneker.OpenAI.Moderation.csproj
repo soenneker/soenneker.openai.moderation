@@ -49,6 +49,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Soenneker.OpenAI.OpenApiClientUtil" Version="4.0.213" />
+        <PackageReference Include="Soenneker.OpenAI.OpenApiClientUtil" Version="4.0.214" />
     </ItemGroup>
 </Project>
