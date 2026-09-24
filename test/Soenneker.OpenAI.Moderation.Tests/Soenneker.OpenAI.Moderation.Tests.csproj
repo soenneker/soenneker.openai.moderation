@@ -29,4 +29,7 @@
         <ProjectReference Include="..\..\src\Soenneker.OpenAI.Moderation\Soenneker.OpenAI.Moderation.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="AwesomeAssertions" Version="9.6.0" />
+    </ItemGroup>
 </Project>
