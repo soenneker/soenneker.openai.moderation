@@ -66,10 +66,7 @@ public sealed class OpenAIModerationUtil : IOpenAIModerationUtil
             Input = ToInput(inputs),
             Model = new CreateModerationRequestModel
             {
-                CreateModerationRequestModelBranch1 = new CreateModerationRequestModelBranch1
-                {
-                    Value = string.IsNullOrWhiteSpace(options.Model) ? OpenAIModerationDefaults.Model : options.Model
-                }
+                String = string.IsNullOrWhiteSpace(options.Model) ? OpenAIModerationDefaults.Model : options.Model
             }
         }, cancellationToken: cancellationToken);
     }
