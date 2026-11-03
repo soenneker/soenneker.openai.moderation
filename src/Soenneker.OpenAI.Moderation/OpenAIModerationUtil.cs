@@ -64,10 +64,7 @@ public sealed class OpenAIModerationUtil : IOpenAIModerationUtil
         return await client.Moderations.PostAsync(new CreateModerationRequest
         {
             Input = ToInput(inputs),
-            Model = new CreateModerationRequestModel
-            {
-                String = string.IsNullOrWhiteSpace(options.Model) ? OpenAIModerationDefaults.Model : options.Model
-            }
+            Model = string.IsNullOrWhiteSpace(options.Model) ? OpenAIModerationDefaults.Model : options.Model
         }, cancellationToken: cancellationToken);
     }
 
